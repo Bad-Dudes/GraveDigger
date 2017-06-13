@@ -52,6 +52,7 @@ public class Enemy
   protected long movementLimit1 = 2;
   protected long movementLimit2 = 3;
   protected long movementLimit3 = 5;
+  protected long moveLocker = 1;
   
   //for quick tweaking of movement speeds
   protected int b = 1;
@@ -60,6 +61,19 @@ public class Enemy
   protected int dify = 0;
   
   private int[][] enemyLayout;
+  
+  
+  
+  
+  private boolean movingRight = false;
+  private boolean movingLeft = false;
+  private boolean movingUp = false;
+  private boolean movingDown = false;
+  private boolean movingRightFinish = false;
+  private boolean movingLeftFinish = false;
+  private boolean movingUpFinish = false;
+  private boolean movingDownFinish = false;
+  private boolean moving = false;
   
   
   //these represent the current position of the gravedigger, the enemies will always try to go there
@@ -121,60 +135,81 @@ public class Enemy
     goUp = (level.getTile(((x/32)+1), ((y/32))-3) == 't');
     goDown = (level.getTile(((x/32)+1), ((y/32)-2)) == 't');
     movementCounter++;
-  }
-  
+  } 
   
   public void move(){
     
     if(movementCounter%movementLimit1==0 ||movementCounter%movementLimit2==0||movementCounter%movementLimit3==0){
       
-      difx = playerX - x;
-      dify = playerY - y;
-      
-      //the enemy is left of the player moves right
-      if(difx > 0 && goRight){
-        ya = 0;
-        xa = b;  
-      }
-      
-      //if the enemy is right of the player moves left
-      if(difx < 0 && goLeft){
-        ya = 0;
-        xa = -b;
+      if(!moving)
+      {
+        
+        difx = playerX - x;
+        dify = playerY - y;
+        
+        //the enemy is left of the player moves right
+        if(difx > 0 && goRight){
+          ya = 0;
+          xa = b;
+          moving = true;
+        }
+        
+        //if the enemy is right of the player moves left
+        if(difx < 0 && goLeft){
+          ya = 0;
+          xa = -b;
+          moving= true;
+        }
+        
+        //if the enemy is on the same x value as the player stops moving on the x
+        if(difx == 0){
+          xa = 0;
+        }
+        
+        //if the enemy has a lower y value than the player / above the player, enemy moves up
+        if(dify > 0 && goDown){
+          xa = 0;
+          ya = b;
+          moving = true;
+        }
+        
+        //if the enemy has a greater y value / is below the player, enemy moves down
+        if(dify <0 && goUp){
+          xa = 0;
+          ya = -b;
+          moving = true;
+        }
+        
+        //if the enemy is on the same y value as the player stops moving on the y
+        if(dify == 0){ya = 0;}
+        
+        //if((!goUp && ya == -b) || (!goDown && ya == b)){ya = 0;}
+        //if((!goLeft && xa == -b) || (!goRight && xa == b)){xa = 0;}
+        
+        x=x+xa;
+        y=y+ya;
         
       }
       
-      //if the enemy is on the same x value as the player stops moving on the x
-      if(difx == 0){
-        xa = 0;
+      else{
+        moveLocker++;
+        x=x+xa;
+        y=y+ya;
+        if(moveLocker==32){
+          moving=false;
+          moveLocker = 1;
+        }
       }
-      
-      //if the enemy has a lower y value than the player / above the player, enemy moves up
-      if(dify > 0 && goDown){
-        xa = 0;
-        ya = b; 
+        
+        
+        if(movementCounter >= movementLimit1*movementLimit2*movementLimit3)
+          movementCounter=0;
       }
-      
-      //if the enemy has a greater y value / is below the player, enemy moves down
-      if(dify <0 && goUp){
-        xa = 0;
-        ya = -b;
-      }
-      
-      //if the enemy is on the same y value as the player stops moving on the y
-      if(dify == 0){ya = 0;}
-      
-      
-      if((!goUp && ya == -b) || (!goDown && ya == b)){ya = 0;}
-      if((!goLeft && xa == -b) || (!goRight && xa == b)){xa = 0;}
-      
-      x = x+xa;
-      y =y+ya;
-      
-      if(movementCounter >= movementLimit1*movementLimit2*movementLimit3)
-        movementCounter=0;
     }
-  }
+  
+  
+  
+  
   
   
   
