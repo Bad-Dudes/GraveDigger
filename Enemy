@@ -49,12 +49,12 @@ public class Enemy
   
   //enemies will only move when this counter is divisible by any of the movementLimits
   protected long movementCounter = 0;
-  protected long movementLimit1 = 2;
-  protected long movementLimit2 = 3;
-  protected long movementLimit3 = 5;
+  protected long movementLimit1 = 1;
+//  protected long movementLimit2 = 1;
+//  protected long movementLimit3 = 1;
   
   //for quick tweaking of movement speeds
-  protected int b = 1;
+  protected int b = 32;
   
   protected int difx = 0;
   protected int dify = 0;
@@ -117,8 +117,8 @@ public class Enemy
     playerX = game.getPlayerX();
     playerY = game.getPlayerY();
     goRight = (level.getTile(((x/32)+2), ((y/32)-3)) == 't');
-    goLeft = (level.getTile(((x/32)+1), ((y/32)-3))== 't');
-    goUp = (level.getTile(((x/32)+1), ((y/32))-3) == 't');
+    goLeft = (level.getTile(((x/32)), ((y/32)-3))== 't');
+    goUp = (level.getTile(((x/32)+1), ((y/32))-4) == 't');
     goDown = (level.getTile(((x/32)+1), ((y/32)-2)) == 't');
     movementCounter++;
   }
@@ -126,7 +126,7 @@ public class Enemy
   
   public void move(){
     
-    if(movementCounter%movementLimit1==0 ||movementCounter%movementLimit2==0||movementCounter%movementLimit3==0){
+    if(movementCounter==50){
       
       difx = playerX - x;
       dify = playerY - y;
@@ -170,9 +170,7 @@ public class Enemy
       
       x = x+xa;
       y =y+ya;
-      
-      if(movementCounter >= movementLimit1*movementLimit2*movementLimit3)
-        movementCounter=0;
+      movementCounter=0;
     }
   }
   
