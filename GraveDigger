@@ -38,6 +38,7 @@ public class GraveDigger
   
   public GraveDigger(boolean hasArmor, boolean hasWand,int x, int y, int xa, int ya, Game game, Level level)
   {
+    coins = game.updatedCoins;
     this.hasArmor = hasArmor;
     
     this.hasWand = hasWand;
@@ -220,6 +221,7 @@ public class GraveDigger
   }
   
   public void coinCollision(Collectibles2 a) {
+    
     int dx = (x-a.x);
     int dy = (y-a.y);  
     if ((int)Math.sqrt(dx*dx+dy*dy)<32)
