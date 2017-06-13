@@ -22,6 +22,7 @@ public class Game extends JPanel
   private int levelInt = 2;
   private boolean levelLoaded = false;
   private Shop s1;
+  protected int updatedCoins;
   
 //gravedigger
   private GraveDigger g1;
@@ -239,17 +240,26 @@ public class Game extends JPanel
       if(g1.levelComplete()){
         setLevelOn(false);
         setLevelInt();
-        s1.setShop();
+        s1.setShop(getCoins());
+
 
         
       }
     }
   }
-  
-  public int getCoins() {
-    int c = g1.getCoins();
-    return c;
+    public int getCoins() {
+      System.out.println(g1.getCoins() + " coins currently");
+    return g1.getCoins();
+    
+
   }
+    
+    public void setGameCoins(int c)
+    {
+      updatedCoins = c;
+    }
+  
+
   
   
 }
