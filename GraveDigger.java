@@ -34,6 +34,7 @@ public class GraveDigger
   private boolean isDead = false;
   private boolean hasKey = false;
   private int coins;
+  private int spewCount = 0;
   
   
   public GraveDigger(boolean hasArmor, boolean hasWand,int x, int y, int xa, int ya, Game game, Level level)
@@ -105,8 +106,37 @@ public class GraveDigger
     else{
 //      if(movingUp)
 //        yL--;
-      if(level.getTile(xL,yL)=='d'||level.getTile(xL,yL)=='g')
-        level.setTile(xL,yL,'t');                    
+if(level.getTile(xL,yL) == 'i'){
+//INFO SPEW
+  
+  switch(spewCount){
+    case 0:
+      level.spewInfo("GRAVEDIGGER IS GAY");
+      break;
+          case 1:
+            level.spewInfo("GRAVEDIGGER IS GREAT");
+      break;
+          case 2:
+            level.spewInfo("GRAVEDIGGER IS DUMB");
+      break;
+          case 3:
+            level.spewInfo("GRAVEDIGGER IS STOOPS");
+      break;
+    default:
+      level.spewInfo("SPEW!");
+       break;
+  }
+  //level.spewInfo(spewCount);
+    spewCount++;
+    level.setTile(xL,yL,'t');  
+  
+                
+      } 
+              
+      if(level.getTile(xL,yL)=='d'||level.getTile(xL,yL)=='g'){
+      level.unSpew();
+      level.setTile(xL,yL,'t');                    
+      }
     }
     
     if((x%32 != 0) || (y)%32 !=0){

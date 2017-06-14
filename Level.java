@@ -21,8 +21,13 @@ public class Level{
   private Image dirt = Toolkit.getDefaultToolkit().getImage("Dirt.png");
   private Image grass = Toolkit.getDefaultToolkit().getImage("Grass.png");
   private Image rock = Toolkit.getDefaultToolkit().getImage("Rock.png");
+  private Image info = Toolkit.getDefaultToolkit().getImage("info.png");
   
   private String leveltxt;
+  private String infoSpew = "";
+//  private String[] spews = {"Welcome to Gravedigger!", "Picking up Gold is Good!", "XD!"};
+//  private int noOfSpews = 0;
+  
   
   private Game game;
   
@@ -50,6 +55,10 @@ public class Level{
       {
         for(int i = 0; i < line.length(); i++){
           levelLayout[xPos][yPos] = line.charAt(i);
+//          if(levelLayout[xPos][yPos] == 'i'){
+//            noOfSpews++;
+//            System.out.println(noOfSpews);
+//          }
           xPos++;
         }
         yPos++;
@@ -57,6 +66,20 @@ public class Level{
       }
       //close the file when you’re done
       br.close();
+      //spews = new String[noOfSpews+1];
+      
+//      if(game.getLevelInt()==0){
+//        fr = new FileReader("tutSpews.txt");
+//        br = new BufferedReader(fr);
+//       // while((line=br.readLine()) != null){
+//          for(int q = 0; q <= noOfSpews; q++){
+//            spews[q] = line;
+//            System.out.println(q);
+//          }
+//        //}
+//      }     
+//      br.close();
+      
     }
     catch(IOException e)
     {
@@ -84,6 +107,11 @@ public class Level{
         if(levelLayout[i][z] == 'r'){
           g2.drawImage(rock, x,y,width,height, null);
         }
+        if(levelLayout[i][z] == 'i'){
+          g2.drawImage(info, x,y,width,height, null);
+          
+        }
+        
         if(levelLayout[i][z] == 't'){
           g2.setColor(Color.BLACK);
           g2.fillRect(x,y,width,height);
@@ -93,15 +121,20 @@ public class Level{
       x = x + width;
       y = 0;
     }
-    if(game.getLevelInt()==0){
-      g2.setColor(Color.WHITE);
-      g.setFont(new Font("TimesRoman", Font.PLAIN, 28)); 
-      g.drawString("The grave digger can dig up, down, left, and right with the W A S D keys or the arrow keys.", 64, 32);
-      g.drawString("Rocks will fall if you dig underneath them. They will crush enemies. Watch out! They'll kill you too!", 64, 128);
-      g.drawString("There are three types of enemies. Skeletons, Ghouls and Ghosts. They will kill you if they touch you.", 64, 192);
-       g.drawString("Skeletons and Ghouls must go through tunnels. Ghosts can go through dirt but they are much slower.", 64, 256);
-      g.drawString("Coin bags give you one coin. You can spend coins in the shop after every level.", 64, 672);
-      g.drawString("Grab the key to exit the level and move on to the next one!", 64, 800);
+    
+     g2.setColor(Color.WHITE);
+     g.setFont(new Font("TimesRoman", Font.PLAIN, 28)); 
+     g.drawString(infoSpew, 64, 32);
+    
+   // if(game.getLevelInt()==0){           
+    //  g2.setColor(Color.WHITE);
+   //   g.setFont(new Font("TimesRoman", Font.PLAIN, 28)); 
+   //   g.drawString("The grave digger can dig up, down, left, and right with the W A S D keys or the arrow keys.", 64, 32);
+   //   g.drawString("Rocks will fall if you dig underneath them. They will crush enemies. Watch out! They'll kill you too!", 64, 128);
+   //   g.drawString("There are three types of enemies. Skeletons, Ghouls and Ghosts. They will kill you if they touch you.", 64, 192);
+  //     g.drawString("Skeletons and Ghouls must go through tunnels. Ghosts can go through dirt but they are much slower.", 64, 256);
+  //    g.drawString("Coin bags give you one coin. You can spend coins in the shop after every level.", 64, 672);
+  //    g.drawString("Grab the key to exit the level and move on to the next one!", 64, 800);
       /* Sentences for the tutorial
        * The grave digger can dig up, down, left, and right with the wasd keys.
        * Enemeis will follow the grave digger through tunnels.
@@ -109,11 +142,26 @@ public class Level{
        * If rocks do not have any ground underneath them they will fall.
        */
     }
-  }
+  
   
   public int getTile(int x,int y){
     return levelLayout[x][y]; 
   }
+  
+
+  public void spewInfo(String s){
+    infoSpew = s;
+  }
+  
+//  public void spewInfo(int i){
+//    System.out.println(i);
+//    infoSpew = spews[i];
+//  }
+  
+  public void unSpew(){
+   infoSpew = ""; 
+  }
+  
   
   public void setTile(int x, int y, char p){
     levelLayout[x][y] = p; 
