@@ -213,12 +213,11 @@ public void paint(Graphics g){
 }
 
 public void collision(Enemy a)  {
-  if(a.getIsDead()){
-    int dx = (x-a.x) + (xa-a.xa);
-    int dy = (y-a.y) + (ya-a.ya);  
-    if ((int)Math.sqrt(dx*dx+dy*dy)<=32)
+  if(!a.getIsDead()){
+    int dx = (x-a.x);
+    int dy = (y-a.y);
+    if (x-a.x==0 && y-a.y==0)
     {
-      
       isDead = true;
     }  
   }

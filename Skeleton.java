@@ -29,7 +29,7 @@ public class Skeleton extends Enemy
   
   public void paint(Graphics g)
   {
-    if(!isDead){
+    if(!enemyIsDead){
       Graphics2D g2 = (Graphics2D) g;
       Image sprite = Toolkit.getDefaultToolkit().getImage("Skeleton.png");
       if (!flipped) g2.drawImage(sprite, x,y-height,width,height, null); //left facing sprite is "default sprite"
