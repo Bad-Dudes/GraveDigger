@@ -42,7 +42,7 @@ public class Rock {
         rockTouch=false; 
       }
       if(level.getTile(xPos,yPos+1) == 't'){
-        if(fallCounter>=100){
+        if(fallCounter>=75){
           level.setTile(xPos,yPos+1,'r');
           level.setTile(xPos,yPos,'t');
           yPos = yPos+1;

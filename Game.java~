@@ -107,7 +107,7 @@ public class Game extends JPanel
     String leveltxt = "level" + levelInt + ".txt";
     String enemytxt = "enemy"+levelInt+".txt";
     String collectiblestxt = "collectibles"+levelInt+".txt";
-    this.l1 = new Level(leveltxt);
+    this.l1 = new Level(leveltxt,this);
     //rocks
     rocks = new Rock[l1.getRockCount()];
     this.g1 = new GraveDigger(false, false, 0, 64, 0, 0,this,l1);
@@ -136,6 +136,9 @@ public class Game extends JPanel
     levelLoaded = false; 
   }
   
+  public int getLevelInt(){
+    return levelInt; 
+  }
   
   public void setLevelOn(boolean a){
     levelOn =  a;
@@ -229,7 +232,7 @@ public class Game extends JPanel
       
       if(g1.levelComplete()){
         setLevelOn(false);
-        setLevelInt(levelInt++);
+        setLevelInt(levelInt+1);
         levelLoaded=false;
       }
     }

@@ -14,6 +14,10 @@ public class Rock {
   private Game game;
   private int xPos;
   private int yPos;
+  protected int x;
+  protected int y;
+  private int width = 32;
+  private int height = 32;
   //counters
   private int fallCounter;
   private int dissapearCounter;
@@ -30,6 +34,7 @@ public class Rock {
     
     this.xPos = xPos;
     this.yPos = yPos;
+      
     
   }
   
@@ -62,5 +67,9 @@ public class Rock {
         rockGone=true;
       }
     }
+  }
+  
+  public boolean getRockTouch(){
+   return rockTouch; 
   }
 }

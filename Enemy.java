@@ -41,17 +41,16 @@ public class Enemy
   protected char left = 'd';
   protected char right = 'd';
   
+  protected boolean isDead = false;
+  
   //for movement
   protected boolean goUp = false;
   protected boolean goDown = false;
   protected boolean goLeft = false;
   protected boolean goRight = false;
   
-  //enemies will only move when this counter is divisible by any of the movementLimits
+  //enemies will only move when this counter reaches a set value
   protected long movementCounter = 0;
-  protected long movementLimit1 = 1;
-//  protected long movementLimit2 = 1;
-//  protected long movementLimit3 = 1;
   
   //for quick tweaking of movement speeds
   protected int b = 32;
@@ -113,6 +112,7 @@ public class Enemy
   
   //updates the variables playerX and playerY which are used by the enemies to move toward the grave digger
   public void updateTarget(){
+    if(!isDead){
     //has to go through game
     playerX = game.getPlayerX();
     playerY = game.getPlayerY();
@@ -121,11 +121,12 @@ public class Enemy
     goUp = (level.getTile(((x/32)+1), ((y/32))-2) == 't');
     goDown = (level.getTile(((x/32)+1), ((y/32))) == 't');
     movementCounter++;
+    }
   }
   
   
   public void move(){
-    
+    if(!isDead){
     if(movementCounter==50){
       
       difx = playerX - x;
@@ -173,8 +174,20 @@ public class Enemy
       movementCounter=0;
     }
   }
+  }
   
-  
+   public void rockCollision(Rock a)  {
+     if(!isDead){
+     if(level.getTile((x/32)+1,(y/32)-1)=='r' && !a.getRockTouch())
+    {
+      isDead = true;
+    }  
+  }
+   }
+   
+   public boolean getIsDead(){
+     return isDead;
+   }
   
   public void enemyReader() {
     

@@ -73,7 +73,7 @@ public class GraveDigger
     int xL = ((x + xa + 32)/32);
     if(movingLeft)
       xL++;
-    int yL =((y + ya - 95)/32);
+    int yL =((y + ya - 32)/32);
     if(movingUp)
       yL++;
     
@@ -103,9 +103,10 @@ public class GraveDigger
     }
     
     else{
-      if(movingUp)
-        yL--;
-      level.setTile(xL,yL,'t');                    
+//      if(movingUp)
+//        yL--;
+      if(level.getTile(xL,yL)=='d'||level.getTile(xL,yL)=='g')
+        level.setTile(xL,yL,'t');                    
     }
     
     if((x%32 != 0) || (y)%32 !=0){
@@ -160,28 +161,28 @@ public class GraveDigger
   
   public void keyPressed(KeyEvent e){
     //only allows movement in one direction at a time
-    if (e.getKeyCode() == KeyEvent.VK_A)
+    if (e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_LEFT)
     {
       if(ya == 0){
         xa = -1;
         movingLeft = true;
       }
     }
-    if (e.getKeyCode() == KeyEvent.VK_D)
+    if (e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_RIGHT)
     {
       if(ya == 0){
         xa = 1;
         movingRight = true;
       }
     }
-    if (e.getKeyCode() == KeyEvent.VK_W)
+    if (e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_UP)
     {
       if(xa ==0){
         ya = -1;
         movingUp = true;
       }
     }
-    if (e.getKeyCode() == KeyEvent.VK_S)
+    if (e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_DOWN)
       if(xa == 0){
       ya = 1;
       movingDown = true;

@@ -195,7 +195,10 @@ public class Game extends JPanel
       {
         b.updateTarget();
         b.move();
-        //g1.collision(b);
+        g1.collision(b);
+        for(Rock a:rocks){
+          b.rockCollision(a);
+        }
       }
       
       for(Ghost b:e.getGList())
@@ -203,14 +206,21 @@ public class Game extends JPanel
       {
         b.updateTarget();
         b.move();
-        //g1.collision(b);
+        g1.collision(b);
       }
       
       for(Ghoul b:e.getGhList())
       {
         b.updateTarget();
         b.move();
-        //g1.collision(b);
+        g1.collision(b);
+        for(Rock a:rocks){
+          b.rockCollision(a);
+        }
+      }
+      
+      for(Rock b:rocks){
+        g1.rockCollision(b);
       }
       
       for(Collectibles2 b:c1.getCList())

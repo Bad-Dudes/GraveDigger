@@ -42,42 +42,42 @@ public class Skeleton extends Enemy
 //  movingUp = false;
 //  movingDown = false;
   
-  public void move(){
-    int dif = 0;
-    
-    //if the distance between the players x and enemies x is greater than the difference between the players y and enemies y
-    if(Math.abs(playerX - x) > Math.abs(playerY-y)){
-      
-      //difference between player's x and enemy's x
-      dif = playerX - x;
-      
-      //the enemy is left of the player moves right
-      if(dif > 0){xa = 1;}
-      
-      //if the enemy is right of the player moves left
-      if(dif < 0){xa = -1;}
-      
-      //if the enemy is on the same x value as the player stops moving on the x
-      if(dif == 0){xa = 0;}
-    }
-    else if(Math.abs(playerY - y) > Math.abs(playerX- x)){
-      
-      //difference between player's y and enemy's y
-      dif = playerY - y;
-      
-      //if the enemy has a lower y value than the player / above the player, enemy moves up
-      if(dif > 0){ya = 1;}
-      
-      //if the enemy has a greater y value / is below the player, enemy moves down
-      if(dif < 0){ya = -1;}
-      
-      //if the enemy is on the same y value as the player stops moving on the y
-      if(dif == 0){ya = 0;}
-    }
-    if ((x + xa <0) || (x + xa > (1280 - width) ))
-      xa *= -1;
-    if ((y + ya <64) || (y + ya > (960) ))
-      ya *= -1;
+//  public void move(){
+//    int dif = 0;
+//    
+//    //if the distance between the players x and enemies x is greater than the difference between the players y and enemies y
+//    if(Math.abs(playerX - x) > Math.abs(playerY-y)){
+//      
+//      //difference between player's x and enemy's x
+//      dif = playerX - x;
+//      
+//      //the enemy is left of the player moves right
+//      if(dif > 0){xa = 1;}
+//      
+//      //if the enemy is right of the player moves left
+//      if(dif < 0){xa = -1;}
+//      
+//      //if the enemy is on the same x value as the player stops moving on the x
+//      if(dif == 0){xa = 0;}
+//    }
+//    else if(Math.abs(playerY - y) > Math.abs(playerX- x)){
+//      
+//      //difference between player's y and enemy's y
+//      dif = playerY - y;
+//      
+//      //if the enemy has a lower y value than the player / above the player, enemy moves up
+//      if(dif > 0){ya = 1;}
+//      
+//      //if the enemy has a greater y value / is below the player, enemy moves down
+//      if(dif < 0){ya = -1;}
+//      
+//      //if the enemy is on the same y value as the player stops moving on the y
+//      if(dif == 0){ya = 0;}
+//    }
+//    if ((x + xa <0) || (x + xa > (1280 - width) ))
+//      xa *= -1;
+//    if ((y + ya <64) || (y + ya > (960) ))
+//      ya *= -1;
     
     /*
     if((x%32 != 0) || (y)%32 !=0){
@@ -123,10 +123,10 @@ public class Skeleton extends Enemy
     */
     
     
-    x = x+xa;
-    y =y+ya;
-    
-  }
+//    x = x+xa;
+//    y =y+ya;
+//    
+//  }
   
   
 }

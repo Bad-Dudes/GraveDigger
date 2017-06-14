@@ -116,10 +116,10 @@ public class Enemy
     //has to go through game
     playerX = game.getPlayerX();
     playerY = game.getPlayerY();
-    goRight = (level.getTile(((x/32)+2), ((y/32)-3)) == 't');
-    goLeft = (level.getTile(((x/32)), ((y/32)-3))== 't');
-    goUp = (level.getTile(((x/32)+1), ((y/32))-4) == 't');
-    goDown = (level.getTile(((x/32)+1), ((y/32)-2)) == 't');
+    goRight = (level.getTile(((x/32)+2), ((y/32)-1)) == 't');
+    goLeft = (level.getTile(((x/32)), ((y/32)-1))== 't');
+    goUp = (level.getTile(((x/32)+1), ((y/32))-2) == 't');
+    goDown = (level.getTile(((x/32)+1), ((y/32))) == 't');
     movementCounter++;
   }
   
@@ -205,16 +205,16 @@ public class Enemy
     for(int i = 0; i < xL; i++){
       for(int z = 0; z < yL; z++){
         if(enemyLayout[i][z] == 's'){
-          sList[skeletonNumber2] = new Skeleton(32*(i-1),32*(z+3),0,0,game,level,enemytxt);
+          sList[skeletonNumber2] = new Skeleton(32*(i-1),32*(z+1),0,0,game,level,enemytxt);
           skeletonNumber2++;
           
         }
         if(enemyLayout[i][z] == 'u'){
-          gList[ghostNumber2] = new Ghost(32*(i-1),32*(z+3),0,0,game,level,enemytxt);
+          gList[ghostNumber2] = new Ghost(32*(i-1),32*(z+1),0,0,game,level,enemytxt);
           ghostNumber2++;
         }
         if(enemyLayout[i][z] == 'h'){
-          ghList[ghoulNumber2] = new Ghoul(32*(i-1),32*(z+3),0,0,game,level,enemytxt);
+          ghList[ghoulNumber2] = new Ghoul(32*(i-1),32*(z+1),0,0,game,level,enemytxt);
           ghoulNumber2++;
         }
         y = y + height;
