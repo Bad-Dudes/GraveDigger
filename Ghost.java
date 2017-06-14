@@ -26,7 +26,7 @@ public class Ghost extends Enemy
   
   public void paint(Graphics g)
   {
-    if(!isDead){
+    if(!enemyIsDead){
     Graphics2D g2 = (Graphics2D) g;
     if (!flipped) g2.drawImage(sprite, x,y-height,width,height, null); //left facing sprite is "default sprite"
     else g2.drawImage(sprite, x+width,y-height,-width,height, null); //flipped left sprite
@@ -35,7 +35,7 @@ public class Ghost extends Enemy
   
 //updates the variables playerX and playerY which are used by the enemies to move toward the grave digger
   public void updateTarget(){
-    if(!isDead){
+    if(!enemyIsDead){
       //has to go through game
       playerX = game.getPlayerX();
       playerY = game.getPlayerY();
@@ -49,7 +49,7 @@ public class Ghost extends Enemy
   
   
   public void move(){
-    if(!isDead){
+    if(!enemyIsDead){
       if(movementCounter==100){
         
         difx = playerX - x;

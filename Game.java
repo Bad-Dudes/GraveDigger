@@ -197,7 +197,7 @@ public class Game extends JPanel
         b.move();
         g1.collision(b);
         for(Rock a:rocks){
-          b.rockCollision(a);
+          b.enemyRockCollision(a);
         }
       }
       
@@ -215,7 +215,7 @@ public class Game extends JPanel
         b.move();
         g1.collision(b);
         for(Rock a:rocks){
-          b.rockCollision(a);
+          b.enemyRockCollision(a);
         }
       }
       
