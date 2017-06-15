@@ -1,0 +1,262 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.*;
+import javax.imageio.*;
+import java.io.*;
+import java.awt.event.KeyEvent; 
+import java.awt.event.KeyListener; 
+
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Toolkit;
+
+public class Enemy
+{
+  protected int x;
+  protected int y;
+  protected int xa;
+  protected int ya;
+  protected int width = 32;
+  protected int height = 32;
+  protected Image sprite;
+  protected boolean flipped;
+  protected Game game;
+  protected int xL = 45;
+  protected int yL = 38;
+  protected Skeleton[] sList;
+  protected Ghost[] gList;
+  protected Ghoul[] ghList;
+  protected int skeletonNumber = 0;
+  protected int ghostNumber = 0;
+  protected int ghoulNumber = 0;
+  protected int skeletonNumber2 = 0;
+  protected int ghostNumber2 = 0;
+  protected int ghoulNumber2 = 0;
+  protected Level level;
+  protected String enemytxt;
+  
+  protected char up = 'd';
+  protected char down = 'd';
+  protected char left = 'd';
+  protected char right = 'd';
+  
+  protected boolean isDead = false;
+  
+  //for movement
+  protected boolean goUp = false;
+  protected boolean goDown = false;
+  protected boolean goLeft = false;
+  protected boolean goRight = false;
+  
+  //enemies will only move when this counter reaches a set value
+  protected long movementCounter = 0;
+  
+  //for quick tweaking of movement speeds
+  protected int b = 32;
+  
+  protected int difx = 0;
+  protected int dify = 0;
+  
+  private int[][] enemyLayout;
+  
+  
+  //these represent the current position of the gravedigger, the enemies will always try to go there
+  protected int playerX = 0;
+  protected int playerY = 0;
+  
+  public Enemy(int x, int y,int xa,int ya, Game game,Level level, String enemytxt) 
+  {
+    this.x = x;
+    this.y = y;
+    this.xa = xa;
+    this.ya = ya;
+    this.game = game;
+    this.level = level;
+    this.enemytxt = enemytxt;
+    
+    enemyLayout = new int[xL][yL];
+    try
+    {
+      //Create a new instance of the FileReader and pass it the
+      //file that needs to be read
+      FileReader fr2 = new FileReader(enemytxt);
+      
+      //Create a new instance of the BufferedReader and
+      //add the FileReader to it
+      BufferedReader br2 = new BufferedReader(fr2);
+      //A string variable that will temporarily what you’re reading
+      String line;
+      //A dual purpose line! First it reads the next line and then
+      //it checks to see if that line was null. If it’s null, then
+      //that means you’re at the end of the file.
+      int yPos = 0;
+      int xPos = 0;
+      while ((line=br2.readLine()) != null)
+      {
+        for(int i = 0; i < line.length(); i++){
+          enemyLayout[xPos][yPos] = line.charAt(i);
+          xPos++;
+        }
+        yPos++;
+        xPos = 0;
+      }
+      //close the file when you’re done
+      br2.close();
+    }
+    catch(IOException e)
+    {
+      //Error message
+    }
+  }
+  
+  //updates the variables playerX and playerY which are used by the enemies to move toward the grave digger
+  public void updateTarget(){
+    if(!isDead){
+    //has to go through game
+    playerX = game.getPlayerX();
+    playerY = game.getPlayerY();
+    goRight = (level.getTile(((x/32)+2), ((y/32)-1)) == 't');
+    goLeft = (level.getTile(((x/32)), ((y/32)-1))== 't');
+    goUp = (level.getTile(((x/32)+1), ((y/32))-2) == 't');
+    goDown = (level.getTile(((x/32)+1), ((y/32))) == 't');
+    movementCounter++;
+    }
+  }
+  
+  
+  public void move(){
+    if(!isDead){
+    if(movementCounter==50){
+      
+      difx = playerX - x;
+      dify = playerY - y;
+      
+      //the enemy is left of the player moves right
+      if(difx > 0 && goRight){
+        ya = 0;
+        xa = b;  
+      }
+      
+      //if the enemy is right of the player moves left
+      if(difx < 0 && goLeft){
+        ya = 0;
+        xa = -b;
+        
+      }
+      
+      //if the enemy is on the same x value as the player stops moving on the x
+      if(difx == 0){
+        xa = 0;
+      }
+      
+      //if the enemy has a lower y value than the player / above the player, enemy moves up
+      if(dify > 0 && goDown){
+        xa = 0;
+        ya = b; 
+      }
+      
+      //if the enemy has a greater y value / is below the player, enemy moves down
+      if(dify <0 && goUp){
+        xa = 0;
+        ya = -b;
+      }
+      
+      //if the enemy is on the same y value as the player stops moving on the y
+      if(dify == 0){ya = 0;}
+      
+      
+      if((!goUp && ya == -b) || (!goDown && ya == b)){ya = 0;}
+      if((!goLeft && xa == -b) || (!goRight && xa == b)){xa = 0;}
+      
+      x = x+xa;
+      y =y+ya;
+      movementCounter=0;
+    }
+  }
+  }
+  
+   public void rockCollision(Rock a)  {
+     if(!isDead){
+     if(level.getTile((x/32)+1,(y/32)-1)=='r' && !a.getRockTouch())
+    {
+      isDead = true;
+    }  
+  }
+   }
+   
+   public boolean getIsDead(){
+     return isDead;
+   }
+  
+  public void enemyReader() {
+    
+    for(int i = 0; i < 42; i++){
+      for(int z = 0; z < 31; z++){
+        if(enemyLayout[i][z] == 's'){
+          skeletonNumber++;
+        }
+        if(enemyLayout[i][z] == 'u'){
+          ghostNumber++;
+        }
+        if(enemyLayout[i][z] == 'h'){
+          ghoulNumber++;
+        }
+      }
+    }
+    
+    
+    sList = new Skeleton[skeletonNumber];
+    gList = new Ghost[ghostNumber];
+    ghList = new Ghoul[ghoulNumber];
+    
+    
+    
+    x = 0;
+    //sky ends after y value
+    y = 64;
+    for(int i = 0; i < xL; i++){
+      for(int z = 0; z < yL; z++){
+        if(enemyLayout[i][z] == 's'){
+          sList[skeletonNumber2] = new Skeleton(32*(i-1),32*(z+1),0,0,game,level,enemytxt);
+          skeletonNumber2++;
+          
+        }
+        if(enemyLayout[i][z] == 'u'){
+          gList[ghostNumber2] = new Ghost(32*(i-1),32*(z+1),0,0,game,level,enemytxt);
+          ghostNumber2++;
+        }
+        if(enemyLayout[i][z] == 'h'){
+          ghList[ghoulNumber2] = new Ghoul(32*(i-1),32*(z+1),0,0,game,level,enemytxt);
+          ghoulNumber2++;
+        }
+        y = y + height;
+      }
+      x = x + width;
+      y = 64;
+    }
+  }
+  
+  
+  public Skeleton[] getSList()
+  {
+    return sList;
+  }
+  
+  public Ghost[] getGList()
+  {
+    return gList;
+  }
+  
+  public Ghoul[] getGhList()
+  {
+    return ghList;
+  }
+  
+  
+  public void paint(Graphics g) {
+    Graphics2D g2 = (Graphics2D) g;
+  }
+  
+  
+}
