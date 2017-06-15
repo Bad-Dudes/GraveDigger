@@ -107,13 +107,6 @@ public class Level{
       g.drawString("If you have a power potion, you can press the Space Bar to become invincible and kill enemies on touch for a short time. Try it!", 64, 448);
       g.drawString("Coin bags give you one coin. You can spend coins in the shop after every level.", 64, 672);
       g.drawString("Grab the key to exit the level and move on to the next one!", 64, 800);
-      
-      /* Sentences for the tutorial
-       * The grave digger can dig up, down, left, and right with the wasd keys.
-       * Enemeis will follow the grave digger through tunnels.
-       * Enemies can be defeated by dropping rocks on them.
-       * If rocks do not have any ground underneath them they will fall.
-       */
     }
   }
   

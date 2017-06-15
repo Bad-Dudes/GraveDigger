@@ -19,7 +19,7 @@ public class Game extends JPanel
   //level
   private Level l1; 
   private boolean levelOn = false;
-  private int levelInt = 1;
+  private int levelInt = 8;
   private boolean levelLoaded = false;
   
   

@@ -108,6 +108,14 @@ public class Level{
       g.drawString("Coin bags give you one coin. You can spend coins in the shop after every level.", 64, 672);
       g.drawString("Grab the key to exit the level and move on to the next one!", 64, 800);
     }
+    if(game.getLevelInt()==8){
+      g2.setColor(Color.WHITE);
+      g.setFont(new Font("TimesRoman", Font.PLAIN, 22)); 
+      g.drawString("Congratulations!", 128, 128);
+      g.drawString("You have beaten the Lord of Skulls' bone army and saved the day!", 128, 192);
+      g.drawString("You live happily ever afer.", 128, 256);
+      g.drawString("The End.", 128, 320);
+    }
   }
   
   public int getTile(int x,int y){

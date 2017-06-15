@@ -1,0 +1,171 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.*;
+import javax.imageio.*;
+import java.io.*;
+import java.awt.event.KeyEvent; 
+import java.awt.event.KeyListener; 
+
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Toolkit;
+
+public class GraveDigger
+{
+  private boolean hasArmor;
+  private boolean hasWand;
+  private boolean movingRight = false;
+  private boolean movingLeft = false;
+  private boolean movingUp = false;
+  private boolean movingDown = false;
+  private int x;
+  private int y;
+  private int xa;
+  private int ya;
+  private int height = 32; 
+  private int width = 32;
+  private Game game;
+  private Level level;
+  
+  
+  public GraveDigger(boolean hasArmor, boolean hasWand,int x, int y, int xa, int ya, Game game, Level level)
+  {
+    this.hasArmor = hasArmor;
+    
+    this.hasWand = hasWand;
+    this.x = x;
+    this.y = y;
+    this.xa = xa;
+    this.ya = ya;
+    
+    this.game = game;
+    this.level = level;
+  }
+  
+  public int getPlayerX(){
+    return x;
+  }
+  public int getPlayerY(){
+    return y;
+  }
+  
+  public void move(){
+    if ((x + xa <0) || (x + xa > (1280 - width) ))
+      xa *= -1;
+    if ((y + ya <64) || (y + ya > (960) ))
+      ya *= -1;
+    
+    
+    int xL = (x + xa)/32;
+    if(movingLeft){
+      xL++; 
+    }
+    
+    int yL =((y + ya - 95)/32);
+    
+    if(level.getTile(xL, yL)== 'r'){
+      xa *= -1;
+      ya *= -1; 
+    }
+    else if(movingRight && level.getTile(xL,yL) == 'r'){
+     xa *= -1;
+     ya *= -1;
+    }
+    else{
+      level.setTile(xL,yL, 't');                    
+    }
+    
+    if((x%32 != 0) || (y)%32 !=0){
+      if(movingLeft){
+        xa = -1;
+        ya = 0;
+      }
+      if(movingRight){
+        xa = 1;
+        ya = 0;
+      }
+      if(movingUp){
+        ya = -1;
+        xa = 0;
+      }
+      if(movingDown){
+        ya = 1;
+        xa = 0;
+      }
+    }
+    
+    else if((x%32 == 0) || (y)%32 ==0){
+      if(movingLeft){
+        movingLeft = false;
+        xa = 0;
+        ya = 0;
+      }
+      if(movingRight){
+        movingRight = false;
+        xa=0;
+        ya=0;
+      }
+      if(movingUp){
+        movingUp = false;
+        xa=0;
+        ya=0;
+      }
+      if(movingDown){
+        movingDown = false;
+        xa=0;
+        ya=0;
+      }
+    }
+    
+    x= x+xa;
+    y= y+ya;
+  }
+  
+  public void keyPressed(KeyEvent e){
+    //only allows movement in one direction at a time
+    if (e.getKeyCode() == KeyEvent.VK_A)
+    {
+      if(ya == 0){
+        xa = -1;
+      }
+    }
+    if (e.getKeyCode() == KeyEvent.VK_D)
+    {
+      if(ya == 0){
+        xa = 1;
+      }
+    }
+    if (e.getKeyCode() == KeyEvent.VK_W)
+    {
+      if(xa ==0){
+        ya = -1;
+      }
+    }
+    if (e.getKeyCode() == KeyEvent.VK_S)
+      if(xa == 0){
+      ya = 1;
+    }
+  }
+  
+  public void keyReleased(KeyEvent e){
+    if(xa == -1)
+      movingLeft = true;
+    if(xa == 1)
+      movingRight = true;
+    if(ya == 1)
+      movingDown = true;
+    if(ya == -1)
+      movingUp = true;
+    
+    xa = 0;
+    ya = 0;
+  }
+  
+  public void paint(Graphics g){
+    Graphics2D g2 = (Graphics2D) g;
+    Image graveDigger = Toolkit.getDefaultToolkit().getImage("GraveDigger.png");
+    if (xa == -1) g2.drawImage(graveDigger, x,y-height,width,height, null); //left facing sprite is "default sprite"
+    else g2.drawImage(graveDigger, x+width,y-height,-width,height, null); //flipped left sprite
+  }
+}

@@ -22,14 +22,11 @@ public class Game extends JPanel
   private int levelInt = 1;
   private boolean levelLoaded = false;
   
-  //shop
-  private Shop s1 = new Shop(this);
-  protected int updatedCoins = 0;
   
 //gravedigger
   private GraveDigger g1;
-  private boolean storedArmor;
-  private boolean storedPotion;
+  private boolean storedArmor = false;
+  private boolean storedPotion = false;
   private Image armor = Toolkit.getDefaultToolkit().getImage("armor.png");
   private Image potion = Toolkit.getDefaultToolkit().getImage("potion.png");
   
@@ -42,6 +39,9 @@ public class Game extends JPanel
   //collectibles
   private Collectibles c1;
   
+  //shop
+  private Shop s1 = new Shop(this,storedArmor,storedPotion);
+  protected int updatedCoins = 0;
   
   public static void main (String[] args) throws InterruptedException  {
     JFrame frame = new JFrame("GraveDigger");
@@ -118,7 +118,7 @@ public class Game extends JPanel
     this.l1 = new Level(leveltxt,this);
     //rocks
     rocks = new Rock[l1.getRockCount()];
-    this.g1 = new GraveDigger(storedArmor, storedPotion, 0, 64, 0, 0,this,l1);
+    this.g1 = new GraveDigger(storedArmor, storedPotion, 0, 64, 0, 0,this,l1,updatedCoins);
     getRockList();
     //enemy
     e = new Enemy(0,0,0,0,this,l1,enemytxt);
@@ -152,11 +152,11 @@ public class Game extends JPanel
       {
         char c = line.charAt(0);
         levelInt = Character.getNumericValue(c);
-        if(line.charAt(1) == 1){
+        if(line.charAt(1) == '1'){
           g1.setHasArmor();
           storedArmor=true;
         }
-        if(line.charAt(2) == 1){
+        if(line.charAt(2) == '1'){
           g1.setHasPotion();
           storedPotion=true;
         }
@@ -345,6 +345,7 @@ public class Game extends JPanel
         storedPotion = g1.getHasPotion();
         setLevelOn(false);
         setLevelInt(levelInt+1);
+        s1 = new Shop(this,storedArmor,storedPotion);
         s1.setShop(getCoins());
         saveGame();
       }
@@ -364,11 +365,21 @@ public class Game extends JPanel
   }
   
   public void setHasArmor(){
+    storedArmor=true;
     g1.setHasArmor();
   }
   
+  public void getHasArmor(){
+   g1.getHasArmor(); 
+  }
+  
   public void setHasPotion() {
+    storedPotion=true;
     g1.setHasPotion();
+  }
+  
+  public void getHasPotion(){
+   g1.getHasPotion(); 
   }
   
   
