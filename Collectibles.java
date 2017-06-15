@@ -19,8 +19,8 @@ public class Collectibles{
   protected int width = 32;
   protected int height = 32;
   private Image collectibles;
-  private int xL = 42;
-  private int yL = 33;
+  private int xL = 45;
+  private int yL = 40;
   
   private Game game;
   

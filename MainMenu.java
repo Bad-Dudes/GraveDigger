@@ -19,19 +19,19 @@ public class MainMenu{
     this.game = game;
   }
   
-    public void setMenuOn(boolean a){
-   menuOn =  a;
+  public void setMenuOn(boolean a){
+    menuOn =  a;
   }
   
   public boolean getMenuOn(){
-   return menuOn; 
+    return menuOn; 
   }
   
   
   public void paint(Graphics g){
-   Graphics2D g2 = (Graphics2D) g;
-Image mainMenu = Toolkit.getDefaultToolkit().getImage("mainMenu.png");
-g2.drawImage(mainMenu, 0,0,1280,960, null); 
+    Graphics2D g2 = (Graphics2D) g;
+    Image mainMenu = Toolkit.getDefaultToolkit().getImage("mainMenu.png");
+    g2.drawImage(mainMenu, 0,0,1280,960, null); 
   }
   
   
@@ -42,16 +42,19 @@ g2.drawImage(mainMenu, 0,0,1280,960, null);
       menuOn = false;
     }
     if(e.getKeyCode() == KeyEvent.VK_2){
-      // LOAD GAME
+      game.loadGame();
+      game.setLevelLoaded();
+      game.setLevelOn(true);
+      menuOn = false;
     }
     if(e.getKeyCode() == KeyEvent.VK_3){
       // EXIT
     }
     if(e.getKeyCode() == KeyEvent.VK_4){
-     game.setLevelInt(0); 
-     game.setLevelLoaded();
-     game.setLevelOn(true);
-     menuOn = false;
+      game.setLevelInt(0); 
+      game.setLevelLoaded();
+      game.setLevelOn(true);
+      menuOn = false;
     }
   }
 }
