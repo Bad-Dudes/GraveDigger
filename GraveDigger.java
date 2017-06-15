@@ -38,12 +38,11 @@ public class GraveDigger
   private int coins;
   
   
-  
-  public GraveDigger(boolean hasArmor, boolean hasPotion,int x, int y, int xa, int ya, Game game, Level level)
+  public GraveDigger(boolean hasArmor, boolean hasPotion,int x, int y, int xa, int ya, Game game, Level level, int coins)
   {
     this.hasArmor = hasArmor;
-    
     this.hasPotion = hasPotion;
+    
     this.x = x;
     this.y = y;
     this.xa = xa;
@@ -51,6 +50,7 @@ public class GraveDigger
     
     this.game = game;
     this.level = level;
+    this.coins = coins;
   }
   public int getPlayerX(){
     return x;
@@ -58,6 +58,27 @@ public class GraveDigger
   
   public int getPlayerY() {
     return y;
+  }
+  
+  public void setHasArmor()
+  {
+    hasArmor = true;
+  }
+  
+  
+  public void setHasPotion()
+  {
+    hasPotion = true;
+  }
+  
+  public boolean getHasArmor()
+  {
+    return hasArmor;
+  }
+  
+  public boolean getHasPotion()
+  {
+    return hasPotion;
   }
   
   public void move(){
@@ -160,129 +181,129 @@ public class GraveDigger
     y= y+ya;
     
   }
-  
-  
-  public void keyPressed(KeyEvent e){
-    //only allows movement in one direction at a time
-    if (e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_LEFT)
-    {
-      if(ya == 0){
-        xa = -1;
-        movingLeft = true;
-      }
-    }
-    if (e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_RIGHT)
-    {
-      if(ya == 0){
-        xa = 1;
-        movingRight = true;
-      }
-    }
-    if (e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_UP)
-    {
-      if(xa ==0){
-        ya = -1;
-        movingUp = true;
-      }
-    }
-    if (e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_DOWN)
-      if(xa == 0){
-      ya = 1;
-      movingDown = true;
-    }
-  }
-  
-  public void keyReleased(KeyEvent e){
-    if(xa == -1)
-      movingLeftFinish = true;
-    if(xa == 1)
-      movingRightFinish = true;
-    if(ya == 1)
-      movingDownFinish = true;
-    if(ya == -1)
-      movingUpFinish = true;
-    
-    xa = 0;
-    ya = 0;
-  }
-  
-  public void paint(Graphics g){
-    Graphics2D g2 = (Graphics2D) g;
-    Image graveDigger = Toolkit.getDefaultToolkit().getImage("GraveDigger.png");
-    if (xa == -1) g2.drawImage(graveDigger, x,y-height,width,height, null); //left facing sprite is "default sprite"
-    else g2.drawImage(graveDigger, x+width,y-height,-width,height, null); //flipped left sprite
-  }
-  
-  public void collision(Enemy a)  {
-    if(!a.getIsDead()){
-      int dx = (x-a.x);
-      int dy = (y-a.y);  
-      if ((int)Math.sqrt(dx*dx+dy*dy)<32)
-      {
-        isDead = true;
-      }  
-    }
-  }
-  
-  public void rockCollision(Rock a)  {
-    if(level.getTile(xL,yL)=='r' && !a.getRockTouch())
-    {
-      isDead = true;
-    }  
-  }
-  
-  public void coinCollision(Collectibles2 a) {
-    int dx = (x-a.x);
-    int dy = (y-a.y);  
-    if ((int)Math.sqrt(dx*dx+dy*dy)<32)
-    {
-      if (a.getIsKey()) {
-        hasKey = true;
-      }
-      if (a.getPickedUp() == false)
-      {
-        a.setPickedUp();
-        coins += 1;
-      }
-    }
-  }
-  
-  public boolean getDead() {
-    return isDead;
-  }
-  
-  public void setDead() {
-    isDead = false;
-  }
-  
-  public int getCoins() {
-      System.out.println(g1.getCoins() + " coins currently");
-    return g1.getCoins();
-    
 
+
+public void keyPressed(KeyEvent e){
+  //only allows movement in one direction at a time
+  if (e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_LEFT)
+  {
+    if(ya == 0){
+      xa = -1;
+      movingLeft = true;
+    }
+  }
+  if (e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_RIGHT)
+  {
+    if(ya == 0){
+      xa = 1;
+      movingRight = true;
+    }
+  }
+  if (e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_UP)
+  {
+    if(xa ==0){
+      ya = -1;
+      movingUp = true;
+    }
+  }
+  if (e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_DOWN)
+    if(xa == 0){
+    ya = 1;
+    movingDown = true;
+  }
+}
+
+public void keyReleased(KeyEvent e){
+  if(xa == -1)
+    movingLeftFinish = true;
+  if(xa == 1)
+    movingRightFinish = true;
+  if(ya == 1)
+    movingDownFinish = true;
+  if(ya == -1)
+    movingUpFinish = true;
+  
+  xa = 0;
+  ya = 0;
+}
+
+public void paint(Graphics g){
+  Graphics2D g2 = (Graphics2D) g;
+  Image graveDigger = Toolkit.getDefaultToolkit().getImage("GraveDigger.png");
+  if (xa == -1) g2.drawImage(graveDigger, x,y-height,width,height, null); //left facing sprite is "default sprite"
+  else g2.drawImage(graveDigger, x+width,y-height,-width,height, null); //flipped left sprite
+}
+
+public void collision(Enemy a)  {
+  if(!a.getIsDead()){
+    int dx = (x-a.x) + (xa-a.xa);
+    int dy = (y-a.y) + (ya-a.ya);  
+    if ((int)Math.sqrt(dx*dx+dy*dy)<=32)
+    {
+      if (!hasPotion)
+      {
+      if(!hasArmor)
+      isDead = true;
+    else
+      hasArmor = false;
+    }
+      else
+      {
+        a.setIsDead();
+      }
+    }
+    
+  }
+}
+
+public void rockCollision(Rock a)  {
+  //FIX COLLISION STILL
+  
+  if(level.getTile(xL,yL)=='r' && !a.getRockTouch())
+  {
+    if(!hasArmor)
+      isDead = true;
+    else
+      hasArmor = false;
+  }  
+}
+
+public void coinCollision(Collectibles2 a) {
+  int dx = (x-a.x);
+  int dy = (y-a.y);  
+  if ((int)Math.sqrt(dx*dx+dy*dy)<32)
+  {
+    if (a.getIsKey()) {
+      hasKey = true;
+    }
+    if (a.getPickedUp() == false)
+    {
+      a.setPickedUp();
+      coins += 1;
+    }
+  }
+}
+
+public boolean getDead() {
+  return isDead;
+}
+
+public void setDead() {
+  isDead = false;
+}
+
+public void setHasKey() {
+  hasKey = true;
+}
+
+public boolean levelComplete() {
+  return hasKey;
+}
+public int getCoins() {
+    return coins;
   }
   
-  public void setHasArmor(boolean a){
-   hasArmor = a; 
-  }
-  
-  public boolean getHasArmor(){
-  return hasArmor;  
-  }
-  
-  public boolean getHasPotion(){
-   return hasPotion; 
-  }
-  
-  public void setHasPotion(boolean a){
-   hasPotion = a; 
-  }
-  
-  public void setHasKey() {
-    hasKey = true;
-  }
-  
-  public boolean levelComplete() {
-    return hasKey;
+  public void setCoins(int a) {
+    coins -= a;
   }
 } 

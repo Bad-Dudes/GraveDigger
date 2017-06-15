@@ -29,12 +29,11 @@ public class Skeleton extends Enemy
   
   public void paint(Graphics g)
   {
-    if(!isDead){
-      Graphics2D g2 = (Graphics2D) g;
-      Image sprite = Toolkit.getDefaultToolkit().getImage("Skeleton.png");
-      if (!flipped) g2.drawImage(sprite, x,y-height,width,height, null); //left facing sprite is "default sprite"
-      else g2.drawImage(sprite, x+width,y-height,-width,height, null); //flipped left sprite
-    }
+    Graphics2D g2 = (Graphics2D) g;
+    Image sprite = Toolkit.getDefaultToolkit().getImage("Skeleton.png");
+    if (!flipped) g2.drawImage(sprite, x,y-height,width,height, null); //left facing sprite is "default sprite"
+    else g2.drawImage(sprite, x+width,y-height,-width,height, null); //flipped left sprite
+    
   }
   
   
@@ -79,51 +78,51 @@ public class Skeleton extends Enemy
 //      xa *= -1;
 //    if ((y + ya <64) || (y + ya > (960) ))
 //      ya *= -1;
-  
-  /*
-   if((x%32 != 0) || (y)%32 !=0){
-   if(movingLeft){
-   xa = -1;
-   ya = 0;
-   }
-   if(movingRight){
-   xa = 1;
-   ya = 0;
-   }
-   if(movingUp){
-   ya = -1;
-   xa = 0;
-   }
-   if(movingDown){
-   ya = 1;
-   xa = 0;
-   }
-   }
-   else if((x%32 == 0) || (y)%32 ==0){
-   if(movingLeft){
-   movingLeft = false;
-   xa = 0;
-   ya = 0;
-   }
-   if(movingRight){
-   movingRight = false;
-   xa=0;
-   ya=0;
-   }
-   if(movingUp){
-   movingUp = false;
-   xa=0;
-   ya=0;
-   }
-   if(movingDown){
-   movingDown = false;
-   xa=0;
-   ya=0;
-   }
-   }
-   */
-  
-  
+    
+    /*
+    if((x%32 != 0) || (y)%32 !=0){
+      if(movingLeft){
+        xa = -1;
+        ya = 0;
+      }
+      if(movingRight){
+        xa = 1;
+        ya = 0;
+      }
+      if(movingUp){
+       ya = -1;
+       xa = 0;
+      }
+      if(movingDown){
+       ya = 1;
+       xa = 0;
+      }
+    }
+    else if((x%32 == 0) || (y)%32 ==0){
+      if(movingLeft){
+      movingLeft = false;
+      xa = 0;
+      ya = 0;
+      }
+      if(movingRight){
+      movingRight = false;
+      xa=0;
+      ya=0;
+      }
+      if(movingUp){
+      movingUp = false;
+      xa=0;
+      ya=0;
+      }
+      if(movingDown){
+      movingDown = false;
+      xa=0;
+      ya=0;
+      }
+    }
+    */
+    
+    
 //    x = x+xa;
 //    y =y+ya;
 //    

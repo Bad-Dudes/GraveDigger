@@ -12,13 +12,11 @@ import java.awt.Image;
 import java.awt.Toolkit;
 
 public class Shop extends JPanel{
-  private int armorCost = 10;
+  private int armorCost = 5;
   private int potionCost = 10;
-  private int wandCost = 10;
+  private int wandCost = 100;
   //contains how much gold the player has
-  private int tensGold = 9;
-  private int onesGold = 9;
-  private int totalGold = 99;
+  private int totalGold = 0;
   
   //these variables are for if the player has wand armor or a potion
   //they are what prevents them from buying more at the shop
@@ -29,7 +27,7 @@ public class Shop extends JPanel{
   private Game game;
   
   //boolean which determines if the shop is painted or not. true means it is painted false means it is not.
-  private boolean shopOn = true;
+  private boolean shopOn = false;
   
   //the x of the white selection box around the items
   private int selectX = 450;
@@ -43,15 +41,13 @@ public class Shop extends JPanel{
   //shows which item is selected, 1 is armor 2 is potion, 3 is wand
   private int itemType = 1;
   
-  //height and width of window
-  private int width = 0;
-  private int height = 0;
   
   //shop takes a width and height value that should be the window size
-  public Shop(int width, int height, Game game){
+  public Shop(Game game){
     this.game = game;
-    this.width = width;
-    this.height = height;
+    
+    
+
     try {
       shopImage = ImageIO.read(new File("shop.png"));
     } catch (IOException e) {
@@ -65,8 +61,9 @@ public class Shop extends JPanel{
   }
   
   //turns shop on and off
-  public void setShop(){
+  public void setShop(int c){
     shopOn = !shopOn;
+    this.totalGold = c;
   }
   
   //this currently only moves the white item box back and forth over the items
@@ -79,8 +76,15 @@ public class Shop extends JPanel{
       }
       
       if (e.getKeyCode() == KeyEvent.VK_ESCAPE){
+        game.setGameCoins(totalGold);
+        game.setLevelLoaded();
+        game.setLevelOn(true);
+        shopOn = false;
+        if (haveArmor) game.setHasArmor();
+        if (havePotion) game.setHasPotion();
+        System.out.println("Escaping!");
         
-        setShop();
+        haveArmor = havePotion = false;
         
       }
       
@@ -110,12 +114,7 @@ public class Shop extends JPanel{
       }
     }
   }
-  public void updateGold(int x){
-    //divide the cost into tens and ones then take those values from the onesGold and tensGold
-    tensGold = (tensGold - (x/10));
-    onesGold = (onesGold - (x%10));
-    
-  }
+
   
   
   //does the purchase of an item, subtracts gold cost and removes the item from the store
@@ -127,15 +126,18 @@ public class Shop extends JPanel{
     if((selectedItem == 1) && (!haveArmor)){
       if(armorCost <= totalGold){
       totalGold = totalGold - armorCost;
-      updateGold(armorCost);
+
+
       haveArmor = true;
+      System.out.println("Purchased armor");
       }
     }
     
     if((selectedItem == 2) && (!havePotion)){
       if(potionCost <= totalGold){
       totalGold = totalGold - potionCost;
-     updateGold(potionCost);
+      game.setHasPotion();
+
       havePotion = true;
       }
     }
@@ -143,7 +145,7 @@ public class Shop extends JPanel{
     if((selectedItem == 3)&&(!haveWand)){
       if(wandCost <= totalGold){
       totalGold = totalGold - wandCost;
-      updateGold(wandCost);
+
       haveWand = true;
       }
       
@@ -180,8 +182,8 @@ public class Shop extends JPanel{
     
     g2d.setColor(Color.WHITE);
     
-    g.drawString(String.valueOf(onesGold), 200, 730);
-    g.drawString(String.valueOf(tensGold), 150, 730);
+    g.drawString(String.valueOf(totalGold), 200, 730);
+    //g.drawString(String.valueOf(tensGold), 150, 730);
     //AFTER DIVIDING IT INTO TENS AND ONES HAVE AN IMAGE VARIABLE FOR TENS AND ONES THEN PAINT CORRESPONDING NUMBERS NEXT TO THE GOLD CIRCLE
     //USE THE DRAW STRING METHOD IN THE PAINT CLASS THING TO MAKE THE NUMBERS FOR THE GOLD COUNTER PLEASE
     //if you have armor a potion or a wand it paints over that item in the shop and prevents you from buying more

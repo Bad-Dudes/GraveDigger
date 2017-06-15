@@ -23,7 +23,7 @@ public class Enemy
   protected boolean flipped;
   protected Game game;
   protected int xL = 45;
-  protected int yL = 40;
+  protected int yL = 38;
   protected Skeleton[] sList;
   protected Ghost[] gList;
   protected Ghoul[] ghList;
@@ -41,7 +41,7 @@ public class Enemy
   protected char left = 'd';
   protected char right = 'd';
   
-  protected boolean enemyIsDead = false;
+  protected boolean isDead = false;
   
   //for movement
   protected boolean goUp = false;
@@ -112,7 +112,7 @@ public class Enemy
   
   //updates the variables playerX and playerY which are used by the enemies to move toward the grave digger
   public void updateTarget(){
-    if(!enemyIsDead){
+    if(!isDead){
     //has to go through game
     playerX = game.getPlayerX();
     playerY = game.getPlayerY();
@@ -126,7 +126,7 @@ public class Enemy
   
   
   public void move(){
-    if(!enemyIsDead){
+    if(!isDead){
     if(movementCounter==50){
       
       difx = playerX - x;
@@ -176,23 +176,23 @@ public class Enemy
   }
   }
   
-   public void enemyRockCollision(Rock a)  {
-     if(!enemyIsDead){
+   public void rockCollision(Rock a)  {
+     if(!isDead){
      if(level.getTile((x/32)+1,(y/32)-1)=='r' && !a.getRockTouch())
     {
-      enemyIsDead = true;
+      isDead = true;
     }  
   }
    }
    
    public boolean getIsDead(){
-     return enemyIsDead;
+     return isDead;
    }
   
   public void enemyReader() {
     
     for(int i = 0; i < 42; i++){
-      for(int z = 0; z < 35; z++){
+      for(int z = 0; z < 31; z++){
         if(enemyLayout[i][z] == 's'){
           skeletonNumber++;
         }
@@ -259,7 +259,6 @@ public class Enemy
   }
   
   public void setIsDead() {
-    enemyIsDead = true;
+    isDead = true;
   }
 }
-  
