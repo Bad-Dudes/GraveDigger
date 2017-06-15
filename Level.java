@@ -13,8 +13,8 @@ public class Level{
   private int height=32;
   private int x;
   private int y;
-  private int xL = 45;
-  private int yL = 40;
+  private int xL = 42;
+  private int yL = 33;
   private int[][] levelLayout;
   
   //sprites
@@ -23,7 +23,6 @@ public class Level{
   private Image rock = Toolkit.getDefaultToolkit().getImage("Rock.png");
   
   private String leveltxt;
-  
   
   private Game game;
   
@@ -72,8 +71,7 @@ public class Level{
     y = 0;
     g2.setColor(Color.BLACK);
     g2.fillRect(0,0,1280,960);
-    g2.setColor(new Color(24,56,90));
-    //g2.setColor(new Color(22,66,65));
+    g2.setColor(Color.BLUE);
     g2.fillRect(0,0,1280,64);
     for(int i = 0; i < xL; i++){
       for(int z = 0; z < yL; z++){
@@ -97,17 +95,13 @@ public class Level{
     }
     if(game.getLevelInt()==0){
       g2.setColor(Color.WHITE);
-      g.setFont(new Font("TimesRoman", Font.PLAIN, 22)); 
+      g.setFont(new Font("TimesRoman", Font.PLAIN, 28)); 
       g.drawString("The grave digger can dig up, down, left, and right with the W A S D keys or the arrow keys.", 64, 32);
       g.drawString("Rocks will fall if you dig underneath them. They will crush enemies. Watch out! They'll kill you too!", 64, 128);
       g.drawString("There are three types of enemies. Skeletons, Ghouls and Ghosts. They will kill you if they touch you.", 64, 192);
-      g.drawString("Skeletons and Ghouls must go through tunnels. Ghosts can go through dirt but they are much slower.", 64, 256);
-      g.drawString("Ghouls are very fast, be careful!", 64, 320);
-      g.drawString("If you have armour on, you can survive being hit by an enemy once. Buy armour in the shop.", 64, 384);
-      g.drawString("If you have a power potion, you can press the Space Bar to become invincible and kill enemies on touch for a short time. Try it!", 64, 448);
+       g.drawString("Skeletons and Ghouls must go through tunnels. Ghosts can go through dirt but they are much slower.", 64, 256);
       g.drawString("Coin bags give you one coin. You can spend coins in the shop after every level.", 64, 672);
       g.drawString("Grab the key to exit the level and move on to the next one!", 64, 800);
-      
       /* Sentences for the tutorial
        * The grave digger can dig up, down, left, and right with the wasd keys.
        * Enemeis will follow the grave digger through tunnels.

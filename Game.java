@@ -19,12 +19,18 @@ public class Game extends JPanel
   //level
   private Level l1; 
   private boolean levelOn = false;
-  private int levelInt = 1;
+  private int levelInt = 2;
   private boolean levelLoaded = false;
+  
+  private boolean storedArmor = false;
+  private boolean storedPotion = true;
+  
+  private Image armor = Toolkit.getDefaultToolkit().getImage("armor.png");
+  private Image potion = Toolkit.getDefaultToolkit().getImage("potion.png");
   
 //gravedigger
   private GraveDigger g1;
-  private int updatedCoins;
+  
   
 //rocks
   private Rock[] rocks;
@@ -35,12 +41,15 @@ public class Game extends JPanel
   //collectibles
   private Collectibles c1;
   
+  private Shop s1 = new Shop(this);
+  protected int updatedCoins = 0;
+  
   
   public static void main (String[] args) throws InterruptedException  {
     JFrame frame = new JFrame("GraveDigger");
     Game gd = new Game();
     frame.add(gd);
-    frame.setSize(1296, 998);
+    frame.setSize(1280, 960);
     
     frame.setVisible(true);
     
@@ -78,11 +87,13 @@ public class Game extends JPanel
         if(menu.getMenuOn())
           menu.keyReleased(e);
         g1.keyReleased(e);
+       
       }  
       
       @Override    
       public void keyPressed(KeyEvent e) {
         g1.keyPressed(e);
+        s1.keyPressed(e);
       }
     });
     
@@ -110,7 +121,7 @@ public class Game extends JPanel
     this.l1 = new Level(leveltxt,this);
     //rocks
     rocks = new Rock[l1.getRockCount()];
-    this.g1 = new GraveDigger(false, false, 0, 64, 0, 0,this,l1);
+    this.g1 = new GraveDigger(storedArmor,storedPotion, 0, 64, 0, 0,this,l1,updatedCoins);
     getRockList();
     //enemy
     e = new Enemy(0,0,0,0,this,l1,enemytxt);
@@ -126,86 +137,7 @@ public class Game extends JPanel
     }
   }
   
-  public void loadGame(){
-    try
-    {
-      //Create a new instance of the FileReader and pass it the
-      //file that needs to be read
-      FileReader fr = new FileReader("save.txt");
-      //Create a new instance of the BufferedReader and
-      //add the FileReader to it
-      BufferedReader br = new BufferedReader(fr);
-      //A string variable that will temporarily what you’re reading
-      String line;
-      //A dual purpose line! First it reads the next line and then
-      //it checks to see if that line was null. If it’s null, then
-      //that means you’re at the end of the file.
-      while ((line=br.readLine()) != null)
-      {
-        char c = line.charAt(0);
-        levelInt = Character.getNumericValue(c);
-        if(line.charAt(1) == 1){
-          g1.setHasArmor(true);  
-        }
-        if(line.charAt(2) == 1){
-          g1.setHasPotion(true);
-        }
-        updatedCoins=Integer.valueOf(line.substring(3));
-      }
-      //close the file when you’re done
-      br.close();
-    }
-    catch(IOException e)
-    {
-      //Error message
-    }
-  }
-  
-  public void saveGame(){
-    String line;
-    
-    final int RADIX = 10;
-    char x = Character.forDigit(levelInt, RADIX);
-    System.out.println(x);
-    char y;
-    char z;
-    if(g1.getHasArmor()){
-      y = (char)'1'; 
-    }
-    else{
-      y = (char)'0'; 
-    }
-    if(g1.getHasPotion()){
-      z = (char)'1';
-    }
-    else{
-      z = (char)'0';
-    }
-    
-    line = new StringBuilder().append(x).append(y).append(z).toString();
-    line = line + updatedCoins;
-    
-    try
-    {
-      //creates a new instance of the FileWriter and passes it
-      //the file you’re writing to
-      FileWriter fw = new FileWriter("save.txt");
-      //creates an instance of PrintWriter and passes it
-      //the instance of the FileWriter
-      PrintWriter pw = new PrintWriter(fw);
-      
-      //Write the text to the file
-      pw.println(line);
-      //close the file
-      pw.close();
-    }
-    catch(IOException e)
-    {
-      //some error message
-    }
-  }
-  
-  //Changes level int, changing levels
+  //Increases level int, moving to next level
   public void setLevelInt(int a){
     levelInt = a;
   }
@@ -227,7 +159,6 @@ public class Game extends JPanel
     return levelOn; 
   }
   
-  
   @Override
   public void paint(Graphics g) {
     Graphics2D g2d = (Graphics2D) g;
@@ -240,6 +171,10 @@ public class Game extends JPanel
     if(levelOn)
     {
       g1.paint(g2d);
+      g2d.setColor(Color.WHITE);
+      g2d.drawString("Coins: " + g1.getCoins(),1200,20);
+      
+      
       
       for(Skeleton a:e.getSList())
         a.paint(g2d);
@@ -253,10 +188,11 @@ public class Game extends JPanel
       for(Collectibles2 a:c1.getCList())
         a.paint(g2d);
       
+      if (g1.getHasArmor()) g2d.drawImage(armor, 1200,20,32,32, null); 
+      if (g1.getHasPotion()) g2d.drawImage(potion, 1232,20,32,32, null); 
     }
+    if(s1.getShop()) s1.paint(g2d);
   }
-  
-  
   
   public void move(){
     
@@ -265,6 +201,7 @@ public class Game extends JPanel
     }
     
     if(levelOn){
+      
       //player movement
       g1.move();
       
@@ -276,12 +213,12 @@ public class Game extends JPanel
         b.move();
         g1.collision(b);
         for(Rock a:rocks){
-          b.enemyRockCollision(a);
+          b.rockCollision(a);
         }
         }
       }
       
-       for(Ghost b:e.getGList())
+      for(Ghost b:e.getGList())
         
       {
         if(!b.getIsDead()) {
@@ -298,7 +235,7 @@ public class Game extends JPanel
         b.move();
         g1.collision(b);
         for(Rock a:rocks){
-          b.enemyRockCollision(a);
+          b.rockCollision(a);
         }
         }
       }
@@ -330,12 +267,18 @@ public class Game extends JPanel
         setLevelOn(false);
         setLevelInt(levelInt+1);
         s1.setShop(getCoins());
-        saveGame();
+        
       }
     }
   }
-  
-  public void setGameCoins(int c)
+      public int getCoins() {
+      System.out.println(g1.getCoins() + " coins currently");
+    return g1.getCoins();
+    
+
+  }
+    
+    public void setGameCoins(int c)
     { 
       updatedCoins = c;
     }
@@ -349,6 +292,7 @@ public class Game extends JPanel
       
       g1.setHasPotion();
     }
+    
+    }
   
   
-}
