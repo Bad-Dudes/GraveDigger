@@ -20,7 +20,7 @@ public class Collectibles{
   protected int height = 32;
   private Image collectibles;
   private int xL = 42;
-  private int yL = 31;
+  private int yL = 33;
   
   private Game game;
   
@@ -91,12 +91,12 @@ public class Collectibles{
     for(int i = 0; i < xL; i++){
       for(int z = 0; z < yL; z++){
         if(collectiblesLayout[i][z] == 'c'){
-          cList[a] = new Collectibles2((32*(i-1)),32*(z+3),game,false,collectiblestxt);
+          cList[a] = new Collectibles2((32*(i-1)),32*(z+1),game,false,collectiblestxt);
           
           a++;
         }
         if(collectiblesLayout[i][z] == 'k'){
-          cList[a] = new Collectibles2(32*(i-1),32*(z+3),game,true,collectiblestxt);         
+          cList[a] = new Collectibles2(32*(i-1),32*(z+1),game,true,collectiblestxt);         
           a++;
         }
         

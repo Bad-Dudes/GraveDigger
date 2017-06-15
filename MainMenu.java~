@@ -47,5 +47,11 @@ g2.drawImage(mainMenu, 0,0,1280,960, null);
     if(e.getKeyCode() == KeyEvent.VK_3){
       // EXIT
     }
+    if(e.getKeyCode() == KeyEvent.VK_4){
+     game.setLevelInt(0); 
+     game.setLevelLoaded();
+     game.setLevelOn(true);
+     menuOn = false;
+    }
   }
 }
