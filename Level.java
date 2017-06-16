@@ -1,0 +1,146 @@
+import java.awt.image.*;
+import java.io.*;
+import javax.imageio.*;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.Toolkit;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
+public class Level{
+  private int width=32;
+  private int height=32;
+  private int x;
+  private int y;
+  private int xL = 45;
+  private int yL = 40;
+  private int[][] levelLayout;
+  
+  //sprites
+  private Image dirt = Toolkit.getDefaultToolkit().getImage("Dirt.png");
+  private Image grass = Toolkit.getDefaultToolkit().getImage("Grass.png");
+  private Image rock = Toolkit.getDefaultToolkit().getImage("Rock.png");
+  
+  private String leveltxt;
+  
+  
+  private Game game;
+  
+  
+  public Level(String leveltxt, Game game){
+    levelLayout = new int[xL][yL];
+    this.leveltxt = leveltxt;
+    this.game = game;
+    try
+    {
+      //Create a new instance of the FileReader and pass it the
+      //file that needs to be read
+      FileReader fr = new FileReader(leveltxt);
+      //Create a new instance of the BufferedReader and
+      //add the FileReader to it
+      BufferedReader br = new BufferedReader(fr);
+      //A string variable that will temporarily what you’re reading
+      String line;
+      //A dual purpose line! First it reads the next line and then
+      //it checks to see if that line was null. If it’s null, then
+      //that means you’re at the end of the file.
+      int yPos = 0;
+      int xPos = 0;
+      while ((line=br.readLine()) != null)
+      {
+        for(int i = 0; i < line.length(); i++){
+          levelLayout[xPos][yPos] = line.charAt(i);
+          xPos++;
+        }
+        yPos++;
+        xPos = 0;
+      }
+      //close the file when you’re done
+      br.close();
+    }
+    catch(IOException e)
+    {
+      //Error message
+    }
+  }
+  
+  public void paint(Graphics g){
+    Graphics2D g2 = (Graphics2D) g;
+    x = -32;
+    //sky ends after y value
+    y = 0;
+    g2.setColor(Color.BLACK);
+    g2.fillRect(0,0,1280,960);
+    g2.setColor(new Color(24,56,90));
+    //g2.setColor(new Color(22,66,65));
+    g2.fillRect(0,0,1280,64);
+    for(int i = 0; i < xL; i++){
+      for(int z = 0; z < yL; z++){
+        if(levelLayout[i][z] == 'g'){
+          //g in the text file represents a grass block
+          g2.drawImage(grass, x,y,width,height, null);
+        }
+        if(levelLayout[i][z] == 'd'){
+          g2.drawImage(dirt, x,y,width,height, null);
+          //d in the text file represents a dirt block
+        }
+        if(levelLayout[i][z] == 'r'){
+          //r in the text file represents a rock
+          g2.drawImage(rock, x,y,width,height, null);
+        }
+        if(levelLayout[i][z] == 't'){
+          //t in the text file represents a tunnel block
+          g2.setColor(Color.BLACK);
+          g2.fillRect(x,y,width,height);
+        }
+        y = y + height;
+      }
+      x = x + width;
+      y = 0;
+    }
+    if(game.getLevelInt()==0){
+      g2.setColor(Color.WHITE);
+      g.setFont(new Font("TimesRoman", Font.PLAIN, 22)); 
+      g.drawString("The grave digger can dig up, down, left, and right with the W A S D keys or the arrow keys.", 64, 32);
+      g.drawString("Rocks will fall if you dig underneath them. They will crush enemies. Watch out! They'll kill you too!", 64, 128);
+      g.drawString("There are three types of enemies. Skeletons, Ghouls and Ghosts. They will kill you if they touch you.", 64, 192);
+      g.drawString("Skeletons and Ghouls must go through tunnels. Ghosts can go through dirt but they are much slower.", 64, 256);
+      g.drawString("Ghouls are very fast, be careful!", 64, 320);
+      g.drawString("If you have armour on, you can survive being hit by an enemy once. Buy armour in the shop.", 64, 384);
+      g.drawString("If you have a power potion, you can press the Space Bar to become invincible and kill enemies on touch for a short time. Try it!", 64, 448);
+      g.drawString("Coin bags give you one coin. You can spend coins in the shop after every level.", 64, 672);
+      g.drawString("Grab the key to exit the level and move on to the next one!", 64, 800);
+    }
+    if(game.getLevelInt()==8){
+      g2.setColor(Color.WHITE);
+      g.setFont(new Font("ComicSans", Font.BOLD, 48)); 
+      g.drawString("YOU'VE WON! THANKS FOR PLAYING!", 192, 384);
+    }
+  }
+  
+  public int getTile(int x,int y){
+    return levelLayout[x][y]; 
+  }
+  
+  public void setTile(int x, int y, char p){
+    //Sets what type of tile is at the given point on the level list.
+    levelLayout[x][y] = p; 
+  }
+  
+  public int getRockCount(){
+    //Counts how many rocks there are within the array text file. This is used when initializing the rock list.
+    int rockCounter = 0;
+    
+    for(int i = 0; i < xL; i++){
+      for(int z = 0; z < yL; z++){
+        if(levelLayout[i][z] == 'r'){
+          rockCounter++; 
+        }
+      }
+    }
+    
+    return rockCounter; 
+  }
+  
+}
